@@ -1,55 +1,60 @@
-board = [["Q", "#", "#", "#", "#", "#", "#", "#"],
-         ["#", "Q", "#", "#", "#", "#", "#", "#"],
-         ["#", "#", "Q", "#", "#", "#", "#", "#"],
-         ["#", "#", "#", "K", "Q", "Q", "#", "#"],
-         ["#", "#", "#", "#", "Q", "Q", "#", "#"],
+board = [["Q", "Q", "Q", "#", "#", "#", "#", "#"],
+         ["Q", "K", "Q", "#", "#", "#", "#", "#"],
+         ["Q", "Q", "Q", "Q", "#", "#", "#", "#"],
+         ["#", "#", "Q", "#", "Q", "Q", "#", "#"],
+         ["#", "#", "#", "Q", "#", "Q", "#", "#"],
          ["#", "#", "#", "#", "#", "#", "#", "#"],
          ["#", "#", "#", "#", "#", "#", "#", "#"],
-         ["#", "#", "#", "#", "#", "#", "#", "#"]]
-
-row = 0
-col = 0
-
-for i in range(len(board)):
-    for j in range(len(board[i])):
-        if(board[i][j] == "K"):
-            row = i
-            col = j
-
-            for i in range(8):
-                if(board[row][i] == "Q"):
-                    print(f"[{row}, {i}]")
-                    break
-
-            for i in range(8):    
-                if(board[i][col] == "Q"):
-                    print(f"[{i}, {col}]")
-                    break
+         ["#", "#", "#", "#", "#", "#", "#", "Q"]]
 
 
-            uzas = row
-            zivi = col
-            for nesto in range(8):
-
-                if((uzas < 0) or (zivi < 0)):
-                    break
-
-                if(board[uzas][zivi] == "Q"):
-                    print(f"[{uzas}, {zivi}]")
-                    break
+def main() -> None:
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if(board[i][j] == "K"):
+                kRow = i
+                kCol = j
                 
-                uzas -= 1
-                zivi -= 1
+                print(f"King [{kRow}, {kCol}]")
+                
+                for up in range(8):
+                    if(board[up][kCol] == "Q"):
+                        print(f"[{up}, {kCol}]")
+                        if(board[kRow][up] == "Q"):
+                            print(f"[{kRow}, {up}]")
+                
+                leftPD, leftND = kRow, kRow
+                rightPD, rightND = kCol, kCol
 
-            a = row
-            b = col
-            for opet in range(8):
+                pr, nr = True, True
+                pl, nl = True, True
 
-                if((a > 7) or (b > 7)):
-                    break
-                if(board[a][b] == "Q"):
-                    print(f"[{a}, {b}]")
-                    break
+                for dg in range(8):
+                    if(leftPD < 7): leftPD += 1
+                    if(rightPD < 7): rightPD += 1
 
-                a += 1
-                b += 1
+                    if(leftND > 0): leftND -= 1
+                    if(rightND > 0): rightND -= 1
+                    
+                    if(board[leftND][rightND] == "Q" and nr == True):
+                        print(f"[{leftND}, {rightND}]")
+                        nr = False
+
+                    if(board[leftPD][rightPD] == "Q" and pr == True):
+                        pr = False                   
+                        print(f"[{leftPD}, {rightPD}]")
+
+                    if(board[leftPD][rightND] == "Q" and pl == True):
+                        pl = False
+                        print(f"[{leftPD}, {rightND}]")
+
+                    if(board[leftND][rightPD] == "Q" and nl == True):
+                        nl = False
+                        print(f"[{leftND}, {rightPD}]")
+
+                    if((pr == False) and (nr == False) and (pl == False) and (nl == False)):
+                        break
+
+
+if __name__ == "__main__":
+    main()
